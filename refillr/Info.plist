@@ -17,6 +17,8 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
+					<key>NSCameraUsageDescription</key>
+					<string>We need the camera to scan supplement labels</string>
 				</dict>
 			</array>
 		</dict>
