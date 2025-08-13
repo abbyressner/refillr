@@ -69,7 +69,7 @@ refillr is an iOS app that helps users with chronic health conditions manage the
 - [ ] **past sessions / history screen**  
   - user sees historical logs of what they’ve refilled and when  
 
-- [x] **favorites / reorder screen** (underdeveloped, but it's there)
+- [ ] **favorites / reorder screen** (underdeveloped, but it's there)
   - user sees trusted products with quick links to buy again  
   - user can edit or remove favorite items  
 
@@ -79,14 +79,12 @@ refillr is an iOS app that helps users with chronic health conditions manage the
 **tab navigation** (tab to screen)
 
 - refill  
-- history  
+- search  
 - items/favorites  
 
 **flow navigation** (screen to screen)
 
-- [ ] login screen  
-  - → home screen (refill)  
-  - → account setup  
+- [x] search screen  
 
 - [x] refill screen  
   - → add/edit item  
@@ -95,13 +93,12 @@ refillr is an iOS app that helps users with chronic health conditions manage the
 - [ ] history screen  
   - → view details of a past refill  
 
-- [x] favorites screen  
+- [ ] favorites screen  
   - → reorder product (via link)  
 
 ## video demo
-
 <div>
-    <a href="https://www.loom.com/share/eadf3d801eec4180b16cd301d531cb63">
-      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/eadf3d801eec4180b16cd301d531cb63-5ef8874852526a01-full-play.gif">
+    <a href="https://www.loom.com/share/4ef5e148641844cab5b1d3ffb2d69e83">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/4ef5e148641844cab5b1d3ffb2d69e83-a16733cc14c29d68-full-play.gif">
     </a>
   </div>
