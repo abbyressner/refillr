@@ -1,0 +1,19 @@
+# secrets
+Secrets.*.xcconfig
+.env
+.vercel
+
+# xcode noise
+DerivedData/
+*.xcuserstate
+*.xccheckout
+xcuserdata/
+*.xcscmblueprint
+
+# macOS cruft
+.DS_Store
+
+# package managers (if you use them)
+Pods/
+Carthage/Build/
+Config/Secrets.xcconfig
