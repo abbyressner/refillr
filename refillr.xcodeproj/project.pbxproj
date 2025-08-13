@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		ECB3F80A2E4ABEB900C4C53A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = ECB3F8092E4ABEB900C4C53A /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		ECB3F7DA2E44239900C4C53A /* refillr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = refillr.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECB3F8092E4ABEB900C4C53A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,6 +34,11 @@
 			path = refillr;
 			sourceTree = "<group>";
 		};
+		ECB3F80B2E4AC57600C4C53A /* Config */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Config;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +55,8 @@
 		ECB3F7D12E44239900C4C53A = {
 			isa = PBXGroup;
 			children = (
+				ECB3F80B2E4AC57600C4C53A /* Config */,
+				ECB3F8092E4ABEB900C4C53A /* .gitignore */,
 				ECB3F7DC2E44239900C4C53A /* refillr */,
 				ECB3F7DB2E44239900C4C53A /* Products */,
 			);
@@ -75,6 +87,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				ECB3F7DC2E44239900C4C53A /* refillr */,
+				ECB3F80B2E4AC57600C4C53A /* Config */,
 			);
 			name = refillr;
 			packageProductDependencies = (
@@ -122,6 +135,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECB3F80A2E4ABEB900C4C53A /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,13 +154,18 @@
 /* Begin XCBuildConfiguration section */
 		ECB3F7EE2E44239A00C4C53A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = ECB3F80B2E4AC57600C4C53A /* Config */;
+			baseConfigurationReferenceRelativePath = Development.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8A393937AJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = refillr/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -159,6 +178,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abbyressner.refillr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROXY_BASE_URL = "https://refillr-proxy.vercel.app";
+				"PROXY_BASE_URL[arch=*]" = "https://refillr-proxy.vercel.app";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -167,13 +189,18 @@
 		};
 		ECB3F7EF2E44239A00C4C53A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = ECB3F80B2E4AC57600C4C53A /* Config */;
+			baseConfigurationReferenceRelativePath = Production.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8A393937AJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = refillr/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -186,6 +213,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abbyressner.refillr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROXY_BASE_URL = "https://refillr-proxy.vercel.app";
+				"PROXY_BASE_URL[arch=*]" = "https://refillr-proxy.vercel.app";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

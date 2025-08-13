@@ -10,43 +10,65 @@ import Foundation
 final class DataManager {
     static let shared = DataManager()
     private init() {}
+    private let fileName = "items.json"
     
-    // file URL in the app’s Documents directory
-    private var itemsURL: URL {
-        let docs = FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask)
-            .first!
-        return docs.appendingPathComponent("items.json")
+    private var documentsURL: URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
     
-    // load either saved items or defaults
-    func loadItems() -> [[RefillItem]] {
+    private var itemsFileURL: URL { documentsURL.appendingPathComponent(fileName) }
+        
+    func loadRefillItems() -> [RefillItem] {
         do {
-            let data = try Data(contentsOf: itemsURL)
-            let decoded = try JSONDecoder().decode([[RefillItem]].self, from: data)
-            return decoded
+            let url = itemsFileURL
+            if !FileManager.default.fileExists(atPath: url.path) {
+                try saveRefillItems([])
+                return []
+            }
+            let data = try Data(contentsOf: url)
+            let items = try JSONDecoder().decode([RefillItem].self, from: data)
+            return items
         } catch {
-            return defaultItems()
+#if DEBUG
+            print("DataManager load error:", error)
+#endif
+            return []
         }
     }
     
-    // save the current items to disk
-    func saveItems(_ items: [[RefillItem]]) {
+    func saveRefillItems(_ items: [RefillItem]) {
         do {
-            let data = try JSONEncoder().encode(items)
-            try data.write(to: itemsURL, options: .atomic)
+            let data = try JSONEncoder.pretty.encode(items)
+            try data.write(to: itemsFileURL, options: [.atomic])
         } catch {
-            print("Failed to save items:", error)
+#if DEBUG
+            print("DataManager save error:", error)
+#endif
         }
     }
     
-    // your initial sample data
-    private func defaultItems() -> [[RefillItem]] {
-        return [
-            [ RefillItem(name: "zyrtec 10mg", checked: false),
-              RefillItem(name: "adderall xr 25mg", checked: false) ],
-            [ RefillItem(name: "wellbutrin xl 300mg", checked: false) ],
-            [ RefillItem(name: "vitamin d 10,000 iu", checked: false) ]
-        ]
+    
+    func upsert(_ item: RefillItem) {
+        var all = loadRefillItems()
+        if let idx = all.firstIndex(where: { $0.id == item.id }) {
+            all[idx] = item
+        } else {
+            all.append(item)
+        }
+        saveRefillItems(all)
+    }
+    
+    func delete(id: String) {
+        var all = loadRefillItems()
+        all.removeAll { $0.id == id }
+        saveRefillItems(all)
+    }
+}
+
+private extension JSONEncoder {
+    static var pretty: JSONEncoder {
+        let e = JSONEncoder()
+        e.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        return e
     }
 }

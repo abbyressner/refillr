@@ -1,0 +1,8 @@
+//
+//  Production.xcconfig
+//  refillr
+//
+//  Created by Abby Ressner on 8/11/25.
+//
+#include "Base.xcconfig"
+PROXY_BASE_URL = https://refillr-proxy.vercel.app
