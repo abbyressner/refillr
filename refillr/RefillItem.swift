@@ -18,7 +18,7 @@ struct RefillItem: Codable, Equatable {
     
     enum TimeOfDay: String, Codable, CaseIterable {
         case morning, afternoon, evening
-        var title: String { rawValue }
+        var title: String { rawValue.capitalized }
     }
 }
 

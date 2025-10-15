@@ -9,28 +9,35 @@ import UIKit
 
 final class RefillViewController: UITableViewController, RefillCellDelegate {
     
-    private var sections: [[RefillItem]] = []
+    private var sections: [[RefillItem]] = RefillViewController.emptySections()
     private let sectionTitles = RefillItem.TimeOfDay.allCases.map { $0.title }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "refill"
         tableView.keyboardDismissMode = .onDrag
-        reloadFromStore()
+        Task { [weak self] in
+            await self?.reloadFromStore()
+        }
     }
     
-    private func reloadFromStore() {
-        //let all: [RefillItem] = DataManager.shared.loadRefillItems()
-        let seed: [RefillItem] = [
-            .make(name: "Turmeric", brand: "Himalaya", dose: "500 mg", time: .morning, labelID: "40405"),
-            .make(name: "Vitamin D3", brand: "NOW Foods", dose: "2000 IU", time: .morning, labelID: "12245"),
-            .make(name: "Magnesium L-Threonate", brand: "Life Extension", dose: "750 mg", time: .evening),
-            .make(name: "Ashwagandha", brand: "KSM-66", dose: "600 mg", time: .evening, labelID: "33501"),
-            .make(name: "Fish Oil", brand: "Nordic Naturals", dose: "1000 mg", time: .afternoon, labelID: "21004")
-        ]
-        sections = RefillItem.TimeOfDay.allCases.map { tod in
-            seed.filter { $0.timeOfDay == tod }
-                .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task { [weak self] in
+            await self?.reloadFromStore()
+        }
+    }
+    
+    @MainActor
+    private func reloadFromStore() async {
+        do {
+            let all = try await DataManager.shared.fetchAll()
+            sections = RefillViewController.groupedSections(for: all)
+        } catch {
+#if DEBUG
+            print("Local store load error:", error)
+#endif
+            sections = RefillViewController.emptySections()
         }
         tableView.reloadData()
     }
@@ -39,7 +46,18 @@ final class RefillViewController: UITableViewController, RefillCellDelegate {
     func refillCellDidToggle(_ cell: RefillCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         sections[indexPath.section][indexPath.row].checked.toggle()
-        DataManager.shared.saveRefillItems(sections.flatMap { $0 })
+        let item = sections[indexPath.section][indexPath.row]
+        
+        Task {
+            do {
+                try await DataManager.shared.upsert(item)
+            } catch {
+#if DEBUG
+                print("Local store save error:", error)
+#endif
+                // Optional: revert UI or show a lightweight error
+            }
+        }
     }
     
     // MARK: - Table Data Source
@@ -75,6 +93,10 @@ final class RefillViewController: UITableViewController, RefillCellDelegate {
         let vc = sb.instantiateViewController(withIdentifier: "ItemDetailViewController") as! ItemDetailViewController
         vc.prefilledTitle = item.name
         vc.labelID = item.labelID ?? ""
+        vc.prefilledBrand = item.brand
+        vc.prefilledServing = item.doseText
+        vc.prefilledType = item.timeOfDay.title
+        vc.refillItem = item
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -84,7 +106,28 @@ final class RefillViewController: UITableViewController, RefillCellDelegate {
 //                sections[s][r].checked = false
 //            }
 //        }
-//        DataManager.shared.saveRefillItems(sections.flatMap { $0 })
+//        // CloudKit-only: persist each change
+//        Task {
+//            for group in sections {
+//                for item in group {
+//                    try? await DataManager.shared.upsert(item)
+//                }
+//            }
+//        }
 //        tableView.reloadData()
 //    }
+}
+
+private extension RefillViewController {
+    static func emptySections() -> [[RefillItem]] {
+        RefillItem.TimeOfDay.allCases.map { _ in [] }
+    }
+    
+    static func groupedSections(for items: [RefillItem]) -> [[RefillItem]] {
+        RefillItem.TimeOfDay.allCases.map { tod in
+            items
+                .filter { $0.timeOfDay == tod }
+                .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        }
+    }
 }

@@ -7,68 +7,123 @@
 
 import Foundation
 
-final class DataManager {
+actor DataManager {
     static let shared = DataManager()
     private init() {}
-    private let fileName = "items.json"
     
-    private var documentsURL: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    }
+    private lazy var storeURL: URL = {
+        let docs = FileManager.default.urls(for: .documentDirectory,
+                                            in: .userDomainMask).first!
+        return docs.appendingPathComponent("refill-items.json",
+                                           isDirectory: false)
+    }()
     
-    private var itemsFileURL: URL { documentsURL.appendingPathComponent(fileName) }
+    private let decoder = JSONDecoder()
+    private let encoder: JSONEncoder = {
+        let enc = JSONEncoder()
+        enc.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
+        return enc
+    }()
+    
+    private var cache: [RefillItem]?
+    
+    enum StoreError: LocalizedError {
+        case failedToLoad(Error)
+        case failedToDecode(Error)
+        case failedToSave(Error)
         
-    func loadRefillItems() -> [RefillItem] {
-        do {
-            let url = itemsFileURL
-            if !FileManager.default.fileExists(atPath: url.path) {
-                try saveRefillItems([])
-                return []
+        var errorDescription: String? {
+            switch self {
+            case .failedToLoad(let err): return "Failed to load items: \(err.localizedDescription)"
+            case .failedToDecode(let err): return "Failed to decode items: \(err.localizedDescription)"
+            case .failedToSave(let err): return "Failed to save items: \(err.localizedDescription)"
             }
-            let data = try Data(contentsOf: url)
-            let items = try JSONDecoder().decode([RefillItem].self, from: data)
-            return items
-        } catch {
-#if DEBUG
-            print("DataManager load error:", error)
-#endif
-            return []
         }
     }
     
-    func saveRefillItems(_ items: [RefillItem]) {
-        do {
-            let data = try JSONEncoder.pretty.encode(items)
-            try data.write(to: itemsFileURL, options: [.atomic])
-        } catch {
-#if DEBUG
-            print("DataManager save error:", error)
-#endif
-        }
+    // MARK: - Public API
+    
+    func fetchAll() async throws -> [RefillItem] {
+        if let cached = cache { return cached }
+        let items = try loadFromDiskOrSeed()
+        cache = items
+        return items
     }
     
-    
-    func upsert(_ item: RefillItem) {
-        var all = loadRefillItems()
-        if let idx = all.firstIndex(where: { $0.id == item.id }) {
-            all[idx] = item
+    func upsert(_ item: RefillItem) async throws {
+        var items = try await fetchAll()
+        if let idx = items.firstIndex(where: { $0.id == item.id }) {
+            items[idx] = item
         } else {
-            all.append(item)
+            items.append(item)
         }
-        saveRefillItems(all)
+        try persist(items)
+        cache = items
     }
     
-    func delete(id: String) {
-        var all = loadRefillItems()
-        all.removeAll { $0.id == id }
-        saveRefillItems(all)
+    func delete(id: String) async throws {
+        var items = try await fetchAll()
+        guard let idx = items.firstIndex(where: { $0.id == id }) else { return }
+        items.remove(at: idx)
+        try persist(items)
+        cache = items
     }
-}
-
-private extension JSONEncoder {
-    static var pretty: JSONEncoder {
-        let e = JSONEncoder()
-        e.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
-        return e
+    
+    func replaceAll(with items: [RefillItem]) async throws {
+        try persist(items)
+        cache = items
+    }
+    
+    // MARK: - Persistence Helpers
+    
+    private func loadFromDiskOrSeed() throws -> [RefillItem] {
+        let fm = FileManager.default
+        if !fm.fileExists(atPath: storeURL.path) {
+            let seeded = seedDefaults()
+            try persist(seeded)
+            return seeded
+        }
+        do {
+            let data = try Data(contentsOf: storeURL)
+            do {
+                return try decoder.decode([RefillItem].self, from: data)
+            } catch {
+                throw StoreError.failedToDecode(error)
+            }
+        } catch {
+            throw StoreError.failedToLoad(error)
+        }
+    }
+    
+    private func persist(_ items: [RefillItem]) throws {
+        do {
+            let data = try encoder.encode(items)
+            try data.write(to: storeURL, options: .atomic)
+        } catch {
+            throw StoreError.failedToSave(error)
+        }
+    }
+    
+    private func seedDefaults() -> [RefillItem] {
+        [
+            RefillItem.make(name: "multivitamin",
+                            brand: "ritual",
+                            dose: "2 capsules",
+                            time: .morning,
+                            checked: false),
+            RefillItem.make(name: "vitamin d",
+                            brand: "thorne",
+                            dose: "10,000 IU",
+                            time: .morning,
+                            checked: false),
+            RefillItem.make(name: "adderall xr",
+                            dose: "25 mg",
+                            time: .afternoon,
+                            checked: false),
+            RefillItem.make(name: "magnesium glycinate",
+                            dose: "400 mg",
+                            time: .evening,
+                            checked: false)
+        ]
     }
 }
