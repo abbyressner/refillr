@@ -24,7 +24,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="51"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqx-rh-KHb">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqx-rh-KHb">
                                             <rect key="frame" x="16" y="13.333333333333336" width="28" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="28" id="PBN-GG-xPw"/>
@@ -36,29 +36,29 @@
                                                 <action selector="checkboxTapped:" destination="F9V-bT-rg0" eventType="touchUpInside" id="8GO-tm-hBe"/>
                                             </connections>
                                         </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="mzD-E5-Al3">
-                                            <rect key="frame" x="56" y="10" width="45.333333333333343" height="34.666666666666664"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="mzD-E5-Al3">
+                                            <rect key="frame" x="56" y="8.5" width="289.66666666666669" height="34"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5f-aN-ppU">
-                                                    <rect key="frame" x="0.0" y="0.0" width="45.333333333333336" height="17"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="289.666666666666686" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Pb-Bu-r90">
-                                                    <rect key="frame" x="0.0" y="19" width="45.333333333333336" height="15.666666666666664"/>
+                                                    <rect key="frame" x="0.0" y="19" width="289.666666666666686" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="F5f-aN-ppU" firstAttribute="leading" secondItem="mzD-E5-Al3" secondAttribute="leading" constant="16" id="rhg-Kg-DWd"/>
-                                                <constraint firstItem="5Pb-Bu-r90" firstAttribute="leading" secondItem="mzD-E5-Al3" secondAttribute="leading" constant="16" id="sH7-wl-s8W"/>
-                                            </constraints>
+                                            <directionalEdgeInsets key="directionalLayoutMargins" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                         </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="mzD-E5-Al3" secondAttribute="trailing" constant="16" id="78w-jA-TTv"/>
+                                        <constraint firstItem="mqx-rh-KHb" firstAttribute="centerY" secondItem="dZJ-3W-Tb0" secondAttribute="centerY" id="G7y-G4-rT1"/>
+                                        <constraint firstItem="mzD-E5-Al3" firstAttribute="centerY" secondItem="mqx-rh-KHb" secondAttribute="centerY" id="aUf-Dd-vD3"/>
                                         <constraint firstItem="mzD-E5-Al3" firstAttribute="leading" secondItem="mqx-rh-KHb" secondAttribute="trailing" constant="12" id="T6Q-SB-p6s"/>
                                         <constraint firstItem="mqx-rh-KHb" firstAttribute="leading" secondItem="dZJ-3W-Tb0" secondAttribute="leading" constant="16" id="TIa-FH-COn"/>
                                     </constraints>
