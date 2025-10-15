@@ -24,7 +24,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="51"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqx-rh-KHb">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqx-rh-KHb">
                                             <rect key="frame" x="16" y="13.333333333333336" width="28" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="28" id="PBN-GG-xPw"/>
@@ -58,7 +58,7 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="mzD-E5-Al3" secondAttribute="trailing" constant="16" id="78w-jA-TTv"/>
                                         <constraint firstItem="mqx-rh-KHb" firstAttribute="centerY" secondItem="dZJ-3W-Tb0" secondAttribute="centerY" id="G7y-G4-rT1"/>
-                                        <constraint firstItem="mzD-E5-Al3" firstAttribute="centerY" secondItem="dZJ-3W-Tb0" secondAttribute="centerY" id="Lip-0l-22h"/>
+                                        <constraint firstItem="mzD-E5-Al3" firstAttribute="centerY" secondItem="mqx-rh-KHb" secondAttribute="centerY" id="aUf-Dd-vD3"/>
                                         <constraint firstItem="mzD-E5-Al3" firstAttribute="leading" secondItem="mqx-rh-KHb" secondAttribute="trailing" constant="12" id="T6Q-SB-p6s"/>
                                         <constraint firstItem="mqx-rh-KHb" firstAttribute="leading" secondItem="dZJ-3W-Tb0" secondAttribute="leading" constant="16" id="TIa-FH-COn"/>
                                     </constraints>
